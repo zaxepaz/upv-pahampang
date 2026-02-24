@@ -3,13 +3,14 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import Header from "./components/Header";
-
+import heroBanner from "./assets/hero_banner.png";
 
 function App() {
   return (
   <div className="relative flex min-h-screen flex-col overflow-x-hidden">
     
       <Header />
+      
       {/* Live Ticker */}
       <div className="bg-forest-green text-white py-2 overflow-hidden whitespace-nowrap border-y border-white/10">
         <div className="flex items-center gap-12 px-6 animate-marquee">
@@ -51,7 +52,7 @@ function App() {
 
         <div className="lg:col-span-5 relative">
           <div className="aspect-video lg:aspect-square bg-slate-200 dark:bg-slate-800 rounded-3xl overflow-hidden shadow-2xl relative group">
-            <img alt="Athletes competing on a track during a sports event" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Intense track and field competition with athletes in red and green uniforms" src="src/assets/hero_banner.png"/>
+            <img alt="Athletes competing on a track during a sports event" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Intense track and field competition with athletes in red and green uniforms" src={heroBanner}/>
             <div className="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent opacity-40">
             
             </div>
