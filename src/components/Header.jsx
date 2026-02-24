@@ -4,9 +4,13 @@ import { useNavigate } from "react-router-dom";
 const Header = () => {
 
   const navigate = useNavigate();
+  const returnHome = () => {
+    navigate("/"); 
+  }
   const handleLogin = () => {
     navigate("/login"); 
   };
+
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
@@ -29,7 +33,7 @@ const Header = () => {
             </div>
 
             <nav className="hidden md:flex items-center gap-8">
-              <a href="#home" className="text-primary text-sm font-bold border-b-2 border-primary pb-1">Home</a>
+              <a href="#home" className="text-primary text-sm font-bold border-b-2 border-primary pb-1" onClick={returnHome}>Home</a>
               <a href="#announcements" className="text-slate-600 dark:text-slate-400 hover:text-primary text-sm font-medium transition-colors">Announcements</a>
               <a href="#games" className="text-slate-600 dark:text-slate-400 hover:text-primary text-sm font-medium transition-colors">Games</a>
               <a href="#schedule" className="text-slate-600 dark:text-slate-400 hover:text-primary text-sm font-medium transition-colors">Schedule</a>

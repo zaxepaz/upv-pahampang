@@ -4,7 +4,7 @@ import heroBanner from "./assets/hero_banner.png";
 const Homepage = () => {
   return (
     <>
-        {/* Live Ticker */}
+    {/* Live Ticker */}
       <div className="bg-forest-green text-white py-2 overflow-hidden whitespace-nowrap border-y border-white/10">
         <div className="flex items-center gap-12 px-6 animate-marquee">
           <div className="flex items-center gap-2">
