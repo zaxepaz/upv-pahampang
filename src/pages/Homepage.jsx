@@ -1,9 +1,12 @@
 import React from "react";
 import heroBanner from "./assets/hero_banner.png";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 const Homepage = () => {
   return (
     <>
+    <Header />
     {/* Live Ticker */}
       <div className="bg-forest-green text-white py-2 overflow-hidden whitespace-nowrap border-y border-white/10">
         <div className="flex items-center gap-12 px-6 animate-marquee">
@@ -219,6 +222,7 @@ const Homepage = () => {
         </div>
       </section>
     </main>
+    <Footer></Footer>
     </>
     
   );

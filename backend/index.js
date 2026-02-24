@@ -1,3 +1,5 @@
+import loginRoutes from "./routes/login.js";
+
 const express = require("express");
 const cors = require("cors");
 
@@ -9,6 +11,9 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.send("Hello Worldd");
 });
+
+// log in route
+app.use("/api", loginRoutes);
 
 const PORT = 5000;
 

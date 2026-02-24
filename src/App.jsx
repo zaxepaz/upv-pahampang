@@ -12,8 +12,6 @@ function App() {
     
   <div className="relative flex min-h-screen flex-col overflow-x-hidden">
       <Router>
-        
-        <Header />
           <Routes>
             <Route path="/" element={
               <Homepage />
@@ -22,8 +20,8 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/dashboard" element={<AdminDashboard />} />
           </Routes>
-        <Footer />
       </Router>
+
   </div>
   );
 }
