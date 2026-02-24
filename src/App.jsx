@@ -10,12 +10,15 @@ function App() {
   return (
   <div className="relative flex min-h-screen flex-col overflow-x-hidden">
       <Router>
+        
+        <Header />
+
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/dashboard" element={<AdminDashboard />} />
         </Routes>
       </Router>
-      <Header />
+      
       
       {/* Live Ticker */}
       <div className="bg-forest-green text-white py-2 overflow-hidden whitespace-nowrap border-y border-white/10">
