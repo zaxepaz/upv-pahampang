@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import AdminDashboard from './pages/AdminDashboard';
 import Homepage from './pages/Homepage';
+import Footer from './components/Footer';
 
 function App() {
   return (
@@ -13,18 +14,16 @@ function App() {
       <Router>
         
         <Header />
-
-        <Routes>
-          <Route path="/" element={
-            <Homepage />
-            } 
-          />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/dashboard" element={<AdminDashboard />} />
-        </Routes>
-        
+          <Routes>
+            <Route path="/" element={
+              <Homepage />
+              } 
+            />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/dashboard" element={<AdminDashboard />} />
+          </Routes>
+        <Footer />
       </Router>
-      
   </div>
   );
 }
