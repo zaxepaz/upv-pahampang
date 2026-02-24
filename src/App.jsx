@@ -4,15 +4,15 @@ import Header from "./components/Header";
 import heroBanner from "./assets/hero_banner.png";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
-import Dashboard from "./pages/Dashboard";
+import AdminDashboard from './pages/AdminDashboard';
 
 function App() {
   return (
   <div className="relative flex min-h-screen flex-col overflow-x-hidden">
       <Router>
         <Routes>
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/dashboard" element={<AdminDashboard />} />
         </Routes>
       </Router>
       <Header />
