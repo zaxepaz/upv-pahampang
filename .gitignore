@@ -28,3 +28,5 @@ build
 *.sln
 *.sw?
 
+# .gitignore
+.env

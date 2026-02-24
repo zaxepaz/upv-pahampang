@@ -20,15 +20,15 @@ const Header = () => {
             </div>
 
             <nav className="hidden md:flex items-center gap-8">
-              <a className="text-primary text-sm font-bold border-b-2 border-primary pb-1">Home</a>
-              <a className="text-slate-600 dark:text-slate-400 hover:text-primary text-sm font-medium transition-colors">Announcements</a>
-              <a className="text-slate-600 dark:text-slate-400 hover:text-primary text-sm font-medium transition-colors">Games</a>
-              <a className="text-slate-600 dark:text-slate-400 hover:text-primary text-sm font-medium transition-colors">Schedule</a>
-              <a className="text-slate-600 dark:text-slate-400 hover:text-primary text-sm font-medium transition-colors">Results</a>
-              <a className="text-slate-600 dark:text-slate-400 hover:text-primary text-sm font-medium transition-colors">Standings</a>
-              <a className="text-slate-600 dark:text-slate-400 hover:text-primary text-sm font-medium transition-colors">Bracket</a>
-              <a className="text-slate-600 dark:text-slate-400 hover:text-primary text-sm font-medium transition-colors">Sponsors</a>
-              <a className="text-slate-600 dark:text-slate-400 hover:text-primary text-sm font-medium transition-colors">Contact</a>
+              <a href="#home" className="text-primary text-sm font-bold border-b-2 border-primary pb-1">Home</a>
+              <a href="#announcements" className="text-slate-600 dark:text-slate-400 hover:text-primary text-sm font-medium transition-colors">Announcements</a>
+              <a href="#games" className="text-slate-600 dark:text-slate-400 hover:text-primary text-sm font-medium transition-colors">Games</a>
+              <a href="#schedule" className="text-slate-600 dark:text-slate-400 hover:text-primary text-sm font-medium transition-colors">Schedule</a>
+              <a href="#results" className="text-slate-600 dark:text-slate-400 hover:text-primary text-sm font-medium transition-colors">Results</a>
+              <a href="#standings" className="text-slate-600 dark:text-slate-400 hover:text-primary text-sm font-medium transition-colors">Standings</a>
+              <a href="#bracket" className="text-slate-600 dark:text-slate-400 hover:text-primary text-sm font-medium transition-colors">Bracket</a>
+              <a href="#sponsors" className="text-slate-600 dark:text-slate-400 hover:text-primary text-sm font-medium transition-colors">Sponsors</a>
+              <a href="#contact" className="text-slate-600 dark:text-slate-400 hover:text-primary text-sm font-medium transition-colors">Contact</a>
             </nav>
           </div>
 

@@ -35,7 +35,7 @@ function App() {
       <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
         <div className="lg:col-span-7 space-y-6">
           <div className="space-y-2">
-            <span className="inline-block bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase">Pahampang 2024</span>
+            <span className="inline-block bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase">Pahampang 2026</span>
             <h1 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white leading-tight">Experience the Spirit <br/> of <span className="text-primary">Athleticism</span></h1>
             <p className="text-slate-600 dark:text-slate-400 text-lg max-w-xl">Join the roar of the crowd and track your favorite academic organizations. The official management platform for UP Visayas' biggest sports festival.</p>
           </div>
