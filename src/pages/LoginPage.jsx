@@ -13,20 +13,34 @@ function LoginPage() {
     setError("");
     setLoading(true);
 
-    // Replace this with your real API call
-    await new Promise((resolve) => setTimeout(resolve, 1000)); 
+    try {
+      const res = await fetch("http://localhost:5000/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: identity, password }),
+      });
 
-    // Simple mock check
-    if (identity === "admin@upv.edu.ph" && password === "password123") {
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.message || "Login failed");
+        setLoading(false);
+        return;
+      }
+     
+
+      // Optional: store in localStorage/session for later use
+      localStorage.setItem("adminUser", JSON.stringify(data.user));
+
       setLoading(false);
-      alert("Login successful! Redirecting...");
-      // Redirect to dashboard
-      navigate("/dashboard");  // or use react-router navigate
-    } else {
+      // Redirect to dashboard page
+      navigate("/dashboard");
+
+    } catch (err) {
+      console.error(err);
+      setError("Something went wrong. Try again.");
       setLoading(false);
-      setError("Invalid email/username or password.");
     }
-
 
     
   };
@@ -109,7 +123,7 @@ function LoginPage() {
           <img alt="CFOS" className="h-8 grayscale hover:grayscale-0 transition-all cursor-help" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNAC8sji-ODOgUDQitdIepGpUUx1IoP30v1n54iCqvqtH5UlpjtH_Z1t5t-KJVZAn3_dUzMdf9EjXaULa_95qpUghou7tNqHYSd_gtNvcGzSVG6ChGFG4fLzGyfjBSywL7zcrTfck50U3GAFSZu69qpPyNNmOZfLrVV2wHkilmdeNZwvjqKU3Ldy4Xny_FHP7-tfbycaULOOV5bPQtZ9Ex28u1fMuvGsFgrM8li0p9qCyjAuHNxmHlJCFL6G3u9CnBCRbmsFClqLY" />
           <img alt="UPVTC" className="h-8 grayscale hover:grayscale-0 transition-all cursor-help" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBu2XtPPnqBMPOAS3iHISku7w_mTOf2M23-Co_YnRukk3si-LRbc5geoq6FhkrIGF6m41b-BJ_YtOPpnLfR95T6rXGMOrXYEd1R54IYgfL8t8bnW2FjGrmCpCxL9IRCmM3wJ7JnhfpYaa3wpGjlG6vRYmbnYL3b9Wan7cnXh0zsBOYhbrXZfmyDyTl1gkBc82shEk6jMY0Aa5-4W_yJODEC_9QnbHpW3s1OdWlfK9MH7EV1ODWGgwS94AScfkfwwdUbSYNjOwCf8Qc" />
         </div>
-        <p className="text-[10px] text-slate-400 mt-6">© 2024 Pahampang Management System. <br />Authorized Personnel Only.</p>
+        <p className="text-[10px] text-slate-400 mt-6">© 2026 Pahampang Management System. <br />Authorized Personnel Only.</p>
       </div>
 
     </div>

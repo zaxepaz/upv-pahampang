@@ -1,7 +1,9 @@
 import loginRoutes from "./routes/login.js";
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
 
-const express = require("express");
-const cors = require("cors");
+dotenv.config(); 
 
 const app = express();
 
