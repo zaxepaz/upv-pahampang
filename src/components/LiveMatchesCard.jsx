@@ -22,9 +22,9 @@ export default function LiveMatchesCard({ icon, colorClass, title, value, subtit
                                     <div className="flex items-center gap-6">
                                         <div className="flex items-center gap-3">
                                             <div className="size-8 rounded-full bg-slate-100 p-1">
-                                                <img alt="CAS" className="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAitNXuNjoCoUt3maa_iJHyMdWyg11fDGwma-R16LGjHrsIqmZBhEjg1lL--QffUdmMKWn74UakC4WEl3WkSn0FNnqXsl8TRG085b-_ENQVmogSKzyGZgmg6tBYyatzoldenO5KdRBKx-bDKKG8K9gazPVEduW5zgeVwX2kf6MdJUnRCONSdjHGaTgGBRrw3jHqdjZQXWzsJlhuyVB7DOsLH3zxr-9f5x5NGAbwuO_NFa4crRn3U_i9WUErIoawSypZZaTAZShyJHo" />
+                                                <img alt="CAS" className="w-full h-full object-contain" src="./public/elek_logo.jpg" />
                                             </div>
-                                            <span className="text-sm font-bold w-12 text-center">CAS</span>
+                                            <span className="text-sm font-bold min-w-[70px] text-center">ELEK</span>
                                         </div>
                                         <div className="flex items-center gap-4 px-4 py-1.5 bg-slate-900 rounded-lg">
                                             <span className="text-xl font-black text-white">84</span>
@@ -32,9 +32,9 @@ export default function LiveMatchesCard({ icon, colorClass, title, value, subtit
                                             <span className="text-xl font-black text-white">79</span>
                                         </div>
                                         <div className="flex items-center gap-3">
-                                            <span className="text-sm font-bold w-12 text-center">SOTECH</span>
+                                            <span className="text-sm font-bold min-w-[70px] text-center">SOTECH</span>
                                             <div className="size-8 rounded-full bg-slate-100 p-1">
-                                                <img alt="SOTECH" className="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8OQzQdA7l55Pk78uyDAmpiJNWiEywNf8zXFvnLJFnAYk1y772GAij9_LYtfPIEnG9CRLAozvf0yDV6t_ZxPggfCuGrRuFCb9mgdsIGcqV1UGB7Vnb9PjWiGg7EvfZFaOzbBH42albhmcWeclj0D5TElu_XMsm1gUO_fkKWw7BBP1QgqDy62IgdxziG94DalkRtaFoAEmNVZBQBCUKGKj1I4XMT0VUeQM-GSz4l4dBmcJYflGghtPffK26-0yqGkUnJh46kaLaunw" />
+                                                <img alt="SOTECH" className="w-full h-full object-contain" src="./public/sotech_logo.png" />
                                             </div>
                                         </div>
                                     </div>
@@ -57,9 +57,9 @@ export default function LiveMatchesCard({ icon, colorClass, title, value, subtit
                                     <div className="flex items-center gap-6">
                                         <div className="flex items-center gap-3">
                                             <div className="size-8 rounded-full bg-slate-100 p-1">
-                                                <img alt="CFOS" className="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNAC8sji-ODOgUDQitdIepGpUUx1IoP30v1n54iCqvqtH5UlpjtH_Z1t5t-KJVZAn3_dUzMdf9EjXaULa_95qpUghou7tNqHYSd_gtNvcGzSVG6ChGFG4fLzGyfjBSywL7zcrTfck50U3GAFSZu69qpPyNNmOZfLrVV2wHkilmdeNZwvjqKU3Ldy4Xny_FHP7-tfbycaULOOV5bPQtZ9Ex28u1fMuvGsFgrM8li0p9qCyjAuHNxmHlJCFL6G3u9CnBCRbmsFClqLY" />
+                                                <img alt="CFOS" className="w-full h-full object-contain" src="./public/fish_logo.jpg" />
                                             </div>
-                                            <span className="text-sm font-bold w-12 text-center">CFOS</span>
+                                            <span className="text-sm font-bold min-w-[70px] text-center">FISH</span>
                                         </div>
                                         <div className="flex items-center gap-4 px-4 py-1.5 bg-slate-900 rounded-lg">
                                             <span className="text-xl font-black text-white">2</span>
@@ -67,9 +67,9 @@ export default function LiveMatchesCard({ icon, colorClass, title, value, subtit
                                             <span className="text-xl font-black text-white">0</span>
                                         </div>
                                         <div className="flex items-center gap-3">
-                                            <span className="text-sm font-bold w-12 text-center">UPVTC</span>
-                                            <div className="size-8 rounded-full bg-slate-100 p-1">
-                                                <img alt="UPVTC" className="w-full h-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBu2XtPPnqBMPOAS3iHISku7w_mTOf2M23-Co_YnRukk3si-LRbc5geoq6FhkrIGF6m41b-BJ_YtOPpnLfR95T6rXGMOrXYEd1R54IYgfL8t8bnW2FjGrmCpCxL9IRCmM3wJ7JnhfpYaa3wpGjlG6vRYmbnYL3b9Wan7cnXh0zsBOYhbrXZfmyDyTl1gkBc82shEk6jMY0Aa5-4W_yJODEC_9QnbHpW3s1OdWlfK9MH7EV1ODWGgwS94AScfkfwwdUbSYNjOwCf8Qc" />
+                                            <span className="text-sm font-bold min-w-[70px] text-center">CLOVERS</span>
+                                            <div className="size-8 shrink-0 rounded-full bg-slate-100 p-1">
+                                                <img alt="UPVTC" className="w-full h-full object-contain" src="./public/clovers_logo.jpg" />
                                             </div>
                                         </div>
                                     </div>
