@@ -14,3 +14,19 @@
   animation: marquee 30s linear infinite;
   width: max-content;
 }
+
+@theme {
+  /* Colors */
+  --color-primary: #7B1113;
+  --color-secondary: #004731;
+  --color-background-light: #fcfcfc;
+
+  /* Fonts */
+  --font-display: "Lexend", sans-serif;
+
+  /* Border radius */
+  --radius: 0.25rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-full: 9999px;
+}
