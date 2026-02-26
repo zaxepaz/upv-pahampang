@@ -1,24 +1,18 @@
 import React from "react";
-
-const links = [
-  { icon: "grid_view", label: "Dashboard", active: true },
-  { icon: "campaign", label: "Announcements" },
-  { icon: "scoreboard", label: "Live Scores" },
-  { icon: "account_tree", label: "Brackets" },
-  { icon: "handshake", label: "Sponsors" },
-  { icon: "group", label: "Users" },
-];
-
-const settings = [
-  { icon: "settings", label: "System Config" },
-  { icon: "security", label: "Logs & Security" },
-];
+import { useNavigate } from "react-router-dom";
 
 export default function Sidebar() {
+  const navigate = useNavigate();
+  const returnToDashboard = () => {
+    navigate("/dashboard"); 
+  } 
+  const announcementsPage = () => {
+    navigate("/dashboard/announcements"); 
+  }
+
   return (
     <aside className="w-72 bg-white border-r border-slate-200 h-screen sticky top-0 hidden lg:flex flex-col p-6">
       
-      {/* Logo */}
       <div className="flex items-center gap-3 text-primary mb-10 px-2">
         <div className="size-10 bg-primary rounded-xl flex items-center justify-center text-white">
           <span className="material-symbols-outlined text-2xl">dashboard</span>
@@ -29,14 +23,13 @@ export default function Sidebar() {
         </div>
       </div>
 
-      {/* Navigation Links */}
       <nav className="flex-1 space-y-2">
         <p className="text-[10px] uppercase tracking-widest font-bold text-slate-400 px-4 mb-2">Main Menu</p>
-           <a class="flex items-center gap-3 px-4 py-3 bg-primary text-white rounded-xl shadow-lg shadow-primary/20 transition-all font-semibold" href="#">
+           <a class="flex items-center gap-3 px-4 py-3 bg-primary text-white rounded-xl shadow-lg shadow-primary/20 transition-all font-semibold" href="#" onClick={returnToDashboard}>
                 <span class="material-symbols-outlined">grid_view</span>
                 Dashboard
             </a>
-           <a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-primary/5 hover:text-primary rounded-xl transition-all font-medium" href="#">
+           <a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-primary/5 hover:text-primary rounded-xl transition-all font-medium" href="#" onClick={announcementsPage}>
                 <span class="material-symbols-outlined">campaign</span>
                 Announcements
             </a>
@@ -70,7 +63,6 @@ export default function Sidebar() {
         </div>
       </nav>
 
-      {/* Admin Profile */}
       <div className="mt-auto border-t border-slate-100 pt-6">
         <div className="flex items-center gap-3 px-2">
           <div className="size-10 rounded-full overflow-hidden bg-slate-100 border border-slate-200">
