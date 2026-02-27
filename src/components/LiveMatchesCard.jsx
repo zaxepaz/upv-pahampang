@@ -1,6 +1,8 @@
 import React from "react";
 import OrgDetailsCard from "./OrgDetailsCard";
 
+
+
 export default function LiveMatchesCard({ icon, colorClass, title, value, subtitle}) {
   return (
     <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
@@ -28,7 +30,7 @@ export default function LiveMatchesCard({ icon, colorClass, title, value, subtit
                                             <span className="text-slate-600 font-bold">-</span>
                                             <span className="text-xl font-black text-white">79</span>
                                         </div>
-                                        <OrgDetailsCard acadOrgAbb="SOTECH" acadOrgLogo="./public/sotech_logo.jpg"/>
+                                        <OrgDetailsCard acadOrgAbb="SOTECH" acadOrgLogo="./public/sotech_logo.png"/>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-3">
