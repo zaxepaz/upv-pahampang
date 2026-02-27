@@ -32,18 +32,36 @@ function AnnouncementsTable() {
             </thead>
     <tbody class="divide-y divide-slate-100">
  
-        {announcements.map((ann) => (
-          <AnnouncementTableRow
-            key={ann.id}
-            title={ann.title}
-            category={ann.category}
-            subtitle={ann.subtitle}
-            date={ann.created_at.split("T")[0]}
-            time={ann.time}
-            authorName={ann.author}
-            status={ann.status}
-          />
-        ))}
+        {announcements.map((ann) => {
+            const dateObj = new Date(ann.created_at);
+
+            // format date 
+            const formattedDate = dateObj.toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+            });
+
+            // format time
+            const formattedTime = dateObj.toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: true,
+            });
+
+            return (
+                <AnnouncementTableRow
+                key={ann.id}
+                title={ann.title}
+                category={ann.category}
+                date={formattedDate}   // ex. "September 15, 2024"
+                time={formattedTime}   // ex. "02:30 PM"
+                authorName={ann.author}
+                status={ann.status}
+                />
+            );
+            })}
+    
       </tbody>
     </table>
   );

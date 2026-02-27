@@ -3,7 +3,6 @@ import React from "react";
 export default function AnnouncementTableRow({
   title,
   category,
-  subtitle,
   date,
   time,
   authorName,
@@ -21,7 +20,7 @@ export default function AnnouncementTableRow({
                     )}
                     <div>
                         <p class="text-sm font-bold text-slate-900 leading-snug">{title}</p>
-                        <p class="text-[11px] text-slate-500 mt-1">{category} • {subtitle}</p>
+                        <p class="text-[11px] text-slate-500 mt-1">{category}</p>
                     </div>
                 </div>
             </td>
@@ -35,7 +34,7 @@ export default function AnnouncementTableRow({
                 </div>
             </td>
             <td class="px-6 py-5">
-                <span class="status-pill bg-green-100 text-green-700 border border-green-200">{status}</span>
+                <span class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-green-100 text-green-700 border border-green-200">{status}</span>
             </td>
             <td class="px-6 py-5">
                 <div class="flex items-center justify-end gap-2">
