@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-export default function AnnouncementsModal({ isOpen, onClose, onPublish, onSave }) {
+export default function AnnouncementsModal({  isOpen, onClose, onPublish, onSave, mode = "create", announcement = null }) {
+
   // State for all fields
-  const [title, setTitle] = useState("");
-  const [category, setCategory] = useState("General Update");
-  const [publishDate, setPublishDate] = useState("");
-  const [body, setBody] = useState("");
+  const [title, setTitle] = useState(announcement?.title || "");
+  const [category, setCategory] = useState(announcement?.category || "General Update");
+  const [publishDate, setPublishDate] = useState(announcement?.created_at || "");
+  const [body, setBody] = useState(announcement?.content || "");
 
   if (!isOpen) return null; 
 
@@ -27,17 +28,26 @@ export default function AnnouncementsModal({ isOpen, onClose, onPublish, onSave 
   try {
     const payload = {
       title,
-      content: body, 
+      content: body,
       category,
       created_at: publishDate ? new Date(publishDate).toISOString() : new Date().toISOString(),
       author: "Juan Admin",
-      status: "Published", 
+      status: "Published",
     };
 
-    const response = await axios.post("http://localhost:5000/api/announcements", payload);
+    let response;
 
-    console.log("Announcement published:", response.data);
+    if (mode === "edit") {
+      // PUT request for editing
+      response = await axios.put(`http://localhost:5000/api/announcements/${announcement.id}`, payload);
+      console.log("Announcement updated:", response.data);
+    } else {
+      // POST request for creating
+      response = await axios.post("http://localhost:5000/api/announcements", payload);
+      console.log("Announcement published:", response.data);
+    }
 
+    // Reset fields
     setTitle("");
     setCategory("General Update");
     setPublishDate("");
@@ -56,8 +66,9 @@ export default function AnnouncementsModal({ isOpen, onClose, onPublish, onSave 
         
         <div className="px-8 py-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
           <div>
-            <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">Create Announcement</h3>
-            <p className="text-sm text-slate-500">Fill in the details for the festival-wide update.</p>
+            <h3 className="text-xl font-bold text-slate-900">
+            {mode === "edit" ? "Edit Announcement" : "Create Announcement"}  
+          </h3>
           </div>
           <button
             onClick={onClose}
@@ -143,9 +154,6 @@ export default function AnnouncementsModal({ isOpen, onClose, onPublish, onSave 
               ></textarea>
             </div>
           </div>
-
-         
-
         </div>
 
         <div className="px-8 py-6 border-t border-slate-200 dark:border-slate-800 flex items-center justify-end gap-3 bg-slate-50 dark:bg-slate-800/30">
@@ -161,11 +169,8 @@ export default function AnnouncementsModal({ isOpen, onClose, onPublish, onSave 
           >
             Save as Draft
           </button>
-          <button
-            onClick={handlePublish}
-            className="bg-primary hover:bg-primary/90 text-white px-8 py-2 rounded-lg font-bold text-sm shadow-lg shadow-primary/20 transition-all"
-          >
-            Publish Now
+          <button onClick={handlePublish}  className="bg-primary hover:bg-primary/90 text-white px-8 py-2 rounded-lg font-bold text-sm shadow-lg shadow-primary/20 transition-all">
+            {mode === "edit" ? "Save Changes" : "Publish Now"}  
           </button>
         </div>
 

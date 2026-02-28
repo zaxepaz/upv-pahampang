@@ -22,10 +22,17 @@ const AdminAnnouncements = () => {
  const itemsPerPage = 5;
 
  const [announcements, setAnnouncements] = useState([]);
+
+ const [editingAnnouncement, setEditingAnnouncement] = useState(null);
+
  // for modal
  const [isModalOpen, setIsModalOpen] = useState(false);
  const handleOpenModal = () => setIsModalOpen(true);
- const handleCloseModal = () => setIsModalOpen(false);
+ // when closing, reset
+const handleCloseModal = () => {
+  setIsModalOpen(false);
+  setEditingAnnouncement(null);
+};
  
  // for delete confirmation
  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -84,6 +91,11 @@ const handleConfirmDelete = async () => {
   setIsConfirmOpen(false);
   setPendingDeleteId(null);
 };
+
+const handleEditClick = (announcement) => {
+  setEditingAnnouncement(announcement);
+  setIsModalOpen(true);
+};
   return (
     <div className="min-h-screen flex bg-background-light text-slate-900">
       <Sidebar />
@@ -117,7 +129,7 @@ const handleConfirmDelete = async () => {
         </div>
         </div>
         
-        <AnnouncementsTable announcements={announcements} onDelete={handleDeleteClick} 
+        <AnnouncementsTable announcements={announcements} onDelete={handleDeleteClick} onEdit={handleEditClick}
         currentPage={currentPage} setCurrentPage={setCurrentPage} itemsPerPage={itemsPerPage} activeFilter={active} />
        
         </div>
@@ -133,6 +145,8 @@ const handleConfirmDelete = async () => {
           isOpen={isModalOpen}
           onClose={handleCloseModal}
           onPublish={handlePublish}
+          mode={editingAnnouncement ? "edit" : "create"}  
+          announcement={editingAnnouncement} 
         />
       )}
     </div>);

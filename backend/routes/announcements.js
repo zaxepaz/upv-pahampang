@@ -7,7 +7,8 @@ router.get("/announcements", async (req, res) => {
   try {
     const { data, error } = await supabaseAdmin
       .from("announcements")
-      .select("*");   
+      .select("*")
+      .order("updated_at", { ascending: false });
     if (error) {
       return res.status(400).json({ error: error.message });
     }
@@ -54,6 +55,34 @@ router.delete("/announcements/:id", async (req, res) => {
   }
 
   res.json({ message: "Deleted successfully" });
+});
+
+
+router.put("/announcements/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, content, category, created_at, author, status } = req.body;
+
+    console.log("Editing announcement id:", id);
+    const { data, error } = await supabaseAdmin
+      .from("announcements")
+      .update({ 
+        title, content, category, created_at, author, status,
+        updated_at: new Date().toISOString() 
+      })
+      .eq("id", id)
+      .select();
+
+    if (error) {
+      console.error("Supabase update error:", error);
+      return res.status(400).json({ error: error.message });
+    }
+
+    res.status(200).json(data);
+  } catch (err) {
+    console.error("Unexpected backend error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
 });
 
 export default router;

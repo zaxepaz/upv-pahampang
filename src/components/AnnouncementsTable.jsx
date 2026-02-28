@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import AnnouncementTableRow from "./AnnouncementTableRow";
 import axios from "axios";
 
-function AnnouncementsTable({ announcements, onDelete, currentPage, setCurrentPage, itemsPerPage, activeFilter}) {
+function AnnouncementsTable({ announcements, onDelete, onEdit, currentPage, setCurrentPage, itemsPerPage, activeFilter}) {
 
   // filtering and pagination 
   const filtered = activeFilter === "All"
@@ -27,47 +27,58 @@ function AnnouncementsTable({ announcements, onDelete, currentPage, setCurrentPa
               <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider text-right">Actions</th>
               </tr>
               </thead>
-      <tbody class="divide-y divide-slate-100">
+      <tbody className="divide-y divide-slate-100">
+        {filtered.length === 0 ? (
+          <tr>
+            <td
+              colSpan="5"
+              className="px-6 py-12 text-center text-slate-500 text-sm"
+            >
+              No announcements found.
+            </td>
+          </tr>
+        ) : (
+          paginated.map((ann) => {
+            const dateObj = new Date(ann.created_at);
 
-          {paginated.map((ann) => {
-              const dateObj = new Date(ann.created_at);
+            const formattedDate = dateObj.toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            });
 
-              // format date 
-              const formattedDate = dateObj.toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-              });
+            const formattedTime = dateObj.toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: true,
+            });
 
-              // format time
-              const formattedTime = dateObj.toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: true,
-              });
-
-              return (
-                  <AnnouncementTableRow
-                  key={ann.id}
-                  id={ann.id}
-                  title={ann.title}
-                  category={ann.category}
-                  date={formattedDate}   // ex. "September 15, 2024"
-                  time={formattedTime}   // ex. "02:30 PM"
-                  authorName={ann.author}
-                  status={ann.status}
-                  onDelete={onDelete}
-                  />
-              );
-              })}
-      
-        </tbody>
+            return (
+              <AnnouncementTableRow
+                key={ann.id}
+                id={ann.id}
+                title={ann.title}
+                category={ann.category}
+                date={formattedDate}
+                time={formattedTime}
+                authorName={ann.author}
+                status={ann.status}
+                onDelete={onDelete}
+                 onEdit={() => onEdit(ann)} 
+              />
+            );
+          })
+        )}
+  </tbody>
       </table>
      <div className="p-6 border-t border-slate-100 flex items-center justify-between">
-        <p className="text-xs font-medium text-slate-500">
-          Showing {paginated.length} of {filtered.length} announcements  
-        </p>
-        <div className="flex items-center gap-2">
+        {filtered.length > 0 && (
+          <p className="text-xs font-medium text-slate-500">
+            Showing {paginated.length} of {filtered.length} announcements  
+          </p>
+        )}
+        {filtered.length > 0 && (
+           <div className="flex items-center gap-2">
           {/* Prev button */}
           <button
             onClick={() => setCurrentPage((p) => p - 1)}
@@ -101,6 +112,8 @@ function AnnouncementsTable({ announcements, onDelete, currentPage, setCurrentPa
             <span className="material-symbols-outlined text-lg">chevron_right</span>
           </button>
         </div>
+        )}
+       
       </div>
     </div>
   );
