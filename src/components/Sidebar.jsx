@@ -1,24 +1,35 @@
 import React from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useState } from "react";
 
-const links = [
-  { icon: "grid_view", label: "Dashboard", active: true },
-  { icon: "campaign", label: "Announcements" },
-  { icon: "scoreboard", label: "Live Scores" },
-  { icon: "account_tree", label: "Brackets" },
-  { icon: "handshake", label: "Sponsors" },
-  { icon: "group", label: "Users" },
-];
-
-const settings = [
-  { icon: "settings", label: "System Config" },
-  { icon: "security", label: "Logs & Security" },
-];
 
 export default function Sidebar() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const returnToDashboard = () => {
+    navigate("/dashboard"); 
+  } 
+  const announcementsPage = () => {
+    navigate("/dashboard/announcements"); 
+  }
+
+  const [active, setActive] = useState("Dashboard"); 
+  
+  const links = [
+    { name: "Dashboard", icon: "grid_view", path: "/dashboard" },
+    { name: "Announcements", icon: "campaign", path: "/dashboard/announcements" },
+    { name: "Live Scores", icon: "scoreboard", path: "#" },
+    { name: "Brackets", icon: "account_tree", path: "#" },
+    { name: "Sponsors", icon: "handshake", path: "#" },
+    { name: "Users", icon: "group", path: "#" },
+  ];
+
+  const activePath = location.pathname;
+
   return (
     <aside className="w-72 bg-white border-r border-slate-200 h-screen sticky top-0 hidden lg:flex flex-col p-6">
       
-      {/* Logo */}
       <div className="flex items-center gap-3 text-primary mb-10 px-2">
         <div className="size-10 bg-primary rounded-xl flex items-center justify-center text-white">
           <span className="material-symbols-outlined text-2xl">dashboard</span>
@@ -28,34 +39,28 @@ export default function Sidebar() {
           <span className="text-[10px] uppercase tracking-widest font-semibold opacity-70">Admin Console</span>
         </div>
       </div>
-
-      {/* Navigation Links */}
+      
       <nav className="flex-1 space-y-2">
         <p className="text-[10px] uppercase tracking-widest font-bold text-slate-400 px-4 mb-2">Main Menu</p>
-           <a class="flex items-center gap-3 px-4 py-3 bg-primary text-white rounded-xl shadow-lg shadow-primary/20 transition-all font-semibold" href="#">
-                <span class="material-symbols-outlined">grid_view</span>
-                Dashboard
-            </a>
-           <a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-primary/5 hover:text-primary rounded-xl transition-all font-medium" href="#">
-                <span class="material-symbols-outlined">campaign</span>
-                Announcements
-            </a>
-            <a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-primary/5 hover:text-primary rounded-xl transition-all font-medium" href="#">
-                <span class="material-symbols-outlined">scoreboard</span>
-                Live Scores
-            </a>
-            <a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-primary/5 hover:text-primary rounded-xl transition-all font-medium" href="#">
-                <span class="material-symbols-outlined">account_tree</span>
-                Brackets
-            </a>
-            <a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-primary/5 hover:text-primary rounded-xl transition-all font-medium" href="#">
-                <span class="material-symbols-outlined">handshake</span>
-                Sponsors
-            </a>
-            <a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-primary/5 hover:text-primary rounded-xl transition-all font-medium" href="#">
-                <span class="material-symbols-outlined">group</span>
-                Users
-            </a>
+
+        {links.map((link) => (
+          <a
+            key={link.name}
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate(link.path); 
+            }}
+            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all w-full
+              ${activePath === link.path
+                ? "bg-primary text-white shadow-lg shadow-primary/20 font-semibold"
+                : "text-slate-600 hover:bg-primary/5 hover:text-primary font-medium"
+            }`}
+          >
+            <span className="material-symbols-outlined">{link.icon}</span>
+            {link.name}
+          </a>
+        ))}
 
         <div className="pt-8">
           <p className="text-[10px] uppercase tracking-widest font-bold text-slate-400 px-4 mb-2">Settings</p>
@@ -70,7 +75,6 @@ export default function Sidebar() {
         </div>
       </nav>
 
-      {/* Admin Profile */}
       <div className="mt-auto border-t border-slate-100 pt-6">
         <div className="flex items-center gap-3 px-2">
           <div className="size-10 rounded-full overflow-hidden bg-slate-100 border border-slate-200">

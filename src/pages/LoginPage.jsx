@@ -1,8 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import axios from "axios";
 
 function LoginPage() {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const [identity, setIdentity] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -14,35 +15,33 @@ function LoginPage() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5000/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: identity, password }),
+  
+      const res = await axios.post("http://localhost:5000/api/login", {
+        email: identity,
+        password,
       });
 
-      const data = await res.json();
+      const data = res.data;
 
-      if (!res.ok) {
-        setError(data.message || "Login failed");
-        setLoading(false);
-        return;
-      }
-     
-
-      // Optional: store in localStorage/session for later use
       localStorage.setItem("adminUser", JSON.stringify(data.user));
 
       setLoading(false);
-      // Redirect to dashboard page
-      navigate("/dashboard");
-
+      navigate("/dashboard"); //
     } catch (err) {
       console.error(err);
-      setError("Something went wrong. Try again.");
+
+      if (err.response) {
+      
+        setError(err.response.data.message || "Login failed");
+      } else if (err.request) {
+      se
+        setError("No response from server. Try again.");
+      } else {
+
+        setError("Something went wrong. Try again.");
+      }
       setLoading(false);
     }
-
-    
   };
 
   return (

@@ -8,6 +8,7 @@ import RecentActivity from "../components/RecentActivity";
 import "../index.css";
 
 const AdminDashboard = () => {
+
   return (
     <div className="min-h-screen flex bg-background-light text-slate-900">
       <Sidebar />
@@ -53,6 +54,7 @@ const AdminDashboard = () => {
                 <div className="lg:col-span-1">
                   <RecentActivity />
                 </div>
+                
           </div>
         </div>
       </main>

@@ -1,4 +1,5 @@
 import loginRoutes from "./routes/login.js";
+import announcementRoutes from "./routes/announcements.js";
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
@@ -16,6 +17,7 @@ app.get("/", (req, res) => {
 
 // log in route
 app.use("/api", loginRoutes);
+app.use("/api", announcementRoutes);
 
 const PORT = 5000;
 
