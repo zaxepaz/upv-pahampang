@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 export default function AnnouncementsModal({ isOpen, onClose, onPublish, onSave }) {
   // State for all fields
@@ -6,8 +7,6 @@ export default function AnnouncementsModal({ isOpen, onClose, onPublish, onSave 
   const [category, setCategory] = useState("General Update");
   const [publishDate, setPublishDate] = useState("");
   const [body, setBody] = useState("");
-  const [notifyMobile, setNotifyMobile] = useState(false);
-  const [pinToTop, setPinToTop] = useState(false);
 
   if (!isOpen) return null; 
 
@@ -17,26 +16,44 @@ export default function AnnouncementsModal({ isOpen, onClose, onPublish, onSave 
     setCategory("General Update");
     setPublishDate("");
     setBody("");
-    setNotifyMobile(false);
-    setPinToTop(false);
     onClose(); // Close modal
   };
 
   const handleSave = () => {
-    // Optional: call onSave callback
-    onSave?.({ title, category, publishDate, body, notifyMobile, pinToTop });
+    onSave?.({ title, category, publishDate, body });
   };
 
-  const handlePublish = () => {
-    // Optional: call onPublish callback
-    onPublish?.({ title, category, publishDate, body, notifyMobile, pinToTop });
-  };
+  const handlePublish = async () => {
+  try {
+    const payload = {
+      title,
+      content: body, 
+      category,
+      created_at: publishDate ? new Date(publishDate).toISOString() : new Date().toISOString(),
+      author: "Juan Admin",
+      status: "Published", 
+    };
+
+    const response = await axios.post("http://localhost:5000/api/announcements", payload);
+
+    console.log("Announcement published:", response.data);
+
+    setTitle("");
+    setCategory("General Update");
+    setPublishDate("");
+    setBody("");
+    onPublish(response.data);
+
+  } catch (error) {
+    console.error("Failed to publish announcement:", error);
+    alert("Error publishing announcement!");
+  }
+};
 
   return (
     <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div className="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-2xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden">
         
-        {/* Modal Header */}
         <div className="px-8 py-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
           <div>
             <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">Create Announcement</h3>
@@ -65,7 +82,6 @@ export default function AnnouncementsModal({ isOpen, onClose, onPublish, onSave 
             />
           </div>
 
-          {/* Category & Publish Date */}
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
@@ -79,7 +95,7 @@ export default function AnnouncementsModal({ isOpen, onClose, onPublish, onSave 
                 <option>General Update</option>
                 <option>Sports Results</option>
                 <option>Logistics</option>
-                <option>Urgent / Emergency</option>
+                <option>Urgent</option>
               </select>
             </div>
             <div>
@@ -128,34 +144,10 @@ export default function AnnouncementsModal({ isOpen, onClose, onPublish, onSave 
             </div>
           </div>
 
-          <div className="flex items-center gap-6">
-            <label className="flex items-center gap-2 cursor-pointer group">
-              <input
-                type="checkbox"
-                checked={notifyMobile}
-                onChange={(e) => setNotifyMobile(e.target.checked)}
-                className="rounded border-slate-300 text-primary focus:ring-primary"
-              />
-              <span className="text-sm font-medium text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-200 transition-colors">
-                Notify via Mobile App
-              </span>
-            </label>
-            <label className="flex items-center gap-2 cursor-pointer group">
-              <input
-                type="checkbox"
-                checked={pinToTop}
-                onChange={(e) => setPinToTop(e.target.checked)}
-                className="rounded border-slate-300 text-primary focus:ring-primary"
-              />
-              <span className="text-sm font-medium text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-200 transition-colors">
-                Pin to Top
-              </span>
-            </label>
-          </div>
+         
 
         </div>
 
-        {/* Modal Footer */}
         <div className="px-8 py-6 border-t border-slate-200 dark:border-slate-800 flex items-center justify-end gap-3 bg-slate-50 dark:bg-slate-800/30">
           <button
             onClick={handleDiscard}

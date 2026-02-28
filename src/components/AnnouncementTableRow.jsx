@@ -1,14 +1,15 @@
 import React from "react";
 
 export default function AnnouncementTableRow({
+  id,  
   title,
   category,
   date,
   time,
   authorName,
-  status
+  status,
+  onDelete,
 }) 
-
 
 {   
     return (
@@ -44,7 +45,7 @@ export default function AnnouncementTableRow({
                     <button class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-all" title="Hide from public">
                         <span class="material-symbols-outlined text-xl">visibility_off</span>
                     </button>
-                    <button class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all" title="Delete">
+                    <button onClick={() => onDelete(id)} class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all" title="Delete">
                         <span class="material-symbols-outlined text-xl">delete</span>
                     </button>
                 </div>

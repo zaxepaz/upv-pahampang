@@ -9,23 +9,81 @@ import React, { useState } from "react";
 import AnnouncementsHeader from "../components/AnnouncementsHeader";
 import AnnouncementsModal from "../components/AnnouncementsModal";
 import AnnouncementsTable from "../components/AnnouncementsTable";
-import AnnouncementTableRow from "../components/AnnouncementTableRow";
+import ConfirmationModal from "../components/Confirmation";
+import { useEffect } from "react";
+import axios from "axios";
 
 const AdminAnnouncements = () => {
  const [active, setActive] = useState("All"); 
- const filters = ["All", "Urgent", "Schedule Change", "Results", "Sponsors", "General"];
+ const filters = ["All", "Urgent", "Schedule Change", "Sports Results", "Sponsors", "General Update"];
 
+ // pagenation states
+ const [currentPage, setCurrentPage] = useState(1);
+ const itemsPerPage = 5;
+
+ const [announcements, setAnnouncements] = useState([]);
  // for modal
  const [isModalOpen, setIsModalOpen] = useState(false);
+ const handleOpenModal = () => setIsModalOpen(true);
+ const handleCloseModal = () => setIsModalOpen(false);
+ 
+ // for delete confirmation
+ const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+ const [pendingDeleteId, setPendingDeleteId] = useState(null);
 
-  const handleOpenModal = () => setIsModalOpen(true);
-  const handleCloseModal = () => setIsModalOpen(false);
+ // reset pagination on filter change
+ const handleFilterChange = (filter) => {
+  setActive(filter);
+  setCurrentPage(1);  
+};
+ // fetch announcements from backend
+  const fetchAnnouncements = async () => {
+  try {
+    const res = await axios.get("http://localhost:5000/api/announcements");
+    setAnnouncements(res.data);
+  } catch (err) {
+    console.error("Announcements fetch error:", err);
+  }
+};
+// fetch on component mount
+useEffect(() => {
+  fetchAnnouncements();
+}, []);
 
-  const handlePublish = (data) => {
+  // after publishing, refetch announcements and close modal
+  const handlePublish = async (data) => {
     console.log("Publishing:", data);
+    await fetchAnnouncements(); 
     handleCloseModal();
   };
+  // delete announcement by row id
+  const handleDelete = async (id) => {
+    try {
+        await axios.delete(`http://localhost:5000/api/announcements/${id}`);
+        fetchAnnouncements(); 
+    } catch (err) {
+        console.error("Delete error:", err);
+    }
+    }
+  // when delete button is clicked, open confirmation modal and store id of announcement to delete
+  const handleDeleteClick = (id) => {
+  setPendingDeleteId(id);
+  setIsConfirmOpen(true);
+};
+// when delete is confirmed, call delete function with stored id, then close confirmation modal and clear stored id
+const handleConfirmDelete = async () => {
+  await handleDelete(pendingDeleteId);
+  // calculate new total pages after deletion
+  const newTotal = announcements.length - 1;
+  const newTotalPages = Math.ceil(newTotal / itemsPerPage);
 
+  // if current page no longer exists, go back one page
+  if (currentPage > newTotalPages) {
+    setCurrentPage((p) => p - 1);
+  }
+  setIsConfirmOpen(false);
+  setPendingDeleteId(null);
+};
   return (
     <div className="min-h-screen flex bg-background-light text-slate-900">
       <Sidebar />
@@ -38,7 +96,7 @@ const AdminAnnouncements = () => {
         {filters.map((btn) => (
                 <button
                   key={btn}
-                  onClick={() => setActive(btn)}
+                  onClick={() => handleFilterChange(btn)} 
                   className={`
                     px-4 py-2 rounded-full text-xs font-bold cursor-pointer transition-all
                     ${active === btn
@@ -58,26 +116,18 @@ const AdminAnnouncements = () => {
         <span class="material-symbols-outlined text-slate-300 text-lg ml-2 cursor-pointer">tune</span>
         </div>
         </div>
-        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-      
-        <AnnouncementsTable />
-        <div class="p-6 border-t border-slate-100 flex items-center justify-between">
-        <p class="text-xs font-medium text-slate-500">Showing 4 of 32 announcements</p>
-        <div class="flex items-center gap-2">
-        <button class="size-8 flex items-center justify-center rounded-lg border border-slate-200 text-slate-400 hover:bg-slate-50 disabled:opacity-50" disabled="">
-        <span class="material-symbols-outlined text-lg">chevron_left</span>
-        </button>
-        <button class="size-8 flex items-center justify-center rounded-lg bg-primary text-white text-xs font-bold">1</button>
-        <button class="size-8 flex items-center justify-center rounded-lg border border-slate-200 text-slate-600 text-xs font-bold hover:bg-slate-50">2</button>
-        <button class="size-8 flex items-center justify-center rounded-lg border border-slate-200 text-slate-600 text-xs font-bold hover:bg-slate-50">3</button>
-        <button class="size-8 flex items-center justify-center rounded-lg border border-slate-200 text-slate-400 hover:bg-slate-50">
-        <span class="material-symbols-outlined text-lg">chevron_right</span>
-        </button>
-        </div>
-        </div>
-        </div>
+        
+        <AnnouncementsTable announcements={announcements} onDelete={handleDeleteClick} 
+        currentPage={currentPage} setCurrentPage={setCurrentPage} itemsPerPage={itemsPerPage} activeFilter={active} />
+       
         </div>
         </main>
+        <ConfirmationModal
+          isOpen={isConfirmOpen}
+          onClose={() => setIsConfirmOpen(false)}
+          onConfirm={handleConfirmDelete}
+        />
+
         {isModalOpen && (
         <AnnouncementsModal
           isOpen={isModalOpen}
