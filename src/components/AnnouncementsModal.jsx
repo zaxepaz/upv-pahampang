@@ -1,23 +1,27 @@
 import React, { useState } from "react";
 import axios from "axios";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
-export default function AnnouncementsModal({  isOpen, onClose, onPublish, onSave, mode = "create", announcement = null }) {
+export default function AnnouncementsModal({ isOpen, onClose, onPublish, onSave, mode = "create", announcement = null }) {
 
-  // State for all fields
   const [title, setTitle] = useState(announcement?.title || "");
   const [category, setCategory] = useState(announcement?.category || "General Update");
-  const [publishDate, setPublishDate] = useState(announcement?.created_at || "");
+  const [publishDate, setPublishDate] = useState(
+    announcement?.created_at ? new Date(announcement.created_at) : null
+  );
   const [body, setBody] = useState(announcement?.content || "");
+  const [errors, setErrors] = useState({});
 
-  if (!isOpen) return null; 
+  if (!isOpen) return null;
 
   const handleDiscard = () => {
-    // Reset all fields
     setTitle("");
     setCategory("General Update");
-    setPublishDate("");
+    setPublishDate(null);
     setBody("");
-    onClose(); // Close modal
+    setErrors({});
+    onClose();
   };
 
   const handleSave = () => {
@@ -25,59 +29,82 @@ export default function AnnouncementsModal({  isOpen, onClose, onPublish, onSave
   };
 
   const handlePublish = async () => {
-  try {
-    const payload = {
-      title,
-      content: body,
-      category,
-      created_at: publishDate ? new Date(publishDate).toISOString() : new Date().toISOString(),
-      author: "Juan Admin",
-      status: "Published",
-    };
+    // Validate
+    const newErrors = {};
+    if (!title.trim()) newErrors.title = "Title is required.";
+    if (!body.trim()) newErrors.body = "Body content is required.";
+    if (!publishDate) newErrors.publishDate = "Publish date is required.";
 
-    let response;
-
-    if (mode === "edit") {
-      // PUT request for editing
-      response = await axios.put(`http://localhost:5000/api/announcements/${announcement.id}`, payload);
-      console.log("Announcement updated:", response.data);
-    } else {
-      // POST request for creating
-      response = await axios.post("http://localhost:5000/api/announcements", payload);
-      console.log("Announcement published:", response.data);
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
     }
 
-    // Reset fields
-    setTitle("");
-    setCategory("General Update");
-    setPublishDate("");
-    setBody("");
-    onPublish(response.data);
+    setErrors({});
 
-  } catch (error) {
-    console.error("Failed to publish announcement:", error);
-    alert("Error publishing announcement!");
-  }
-};
+    try {
+      const now = new Date();
+      const phTime = new Date(now.getTime() + (8 * 60 * 60 * 1000));
+
+      const payload = {
+        title,
+        content: body,
+        category,
+        created_at: mode === "edit"
+          ? phTime.toISOString()
+          : (() => {
+              const combined = new Date(
+                publishDate.getFullYear(),
+                publishDate.getMonth(),
+                publishDate.getDate(),
+                now.getHours(),
+                now.getMinutes(),
+                now.getSeconds()
+              );
+              return new Date(combined.getTime() + (8 * 60 * 60 * 1000)).toISOString();
+            })(),
+        author: "Juan Admin",
+        status: "Published",
+      };
+
+      let response;
+
+      if (mode === "edit") {
+        response = await axios.put(`http://localhost:5000/api/announcements/${announcement.id}`, payload);
+        console.log("Announcement updated:", response.data);
+      } else {
+        response = await axios.post("http://localhost:5000/api/announcements", payload);
+        console.log("Announcement published:", response.data);
+      }
+
+      setTitle("");
+      setCategory("General Update");
+      setPublishDate(null);
+      setBody("");
+      setErrors({});
+      onPublish(response.data);
+
+    } catch (error) {
+      console.error("Failed to publish announcement:", error);
+      alert("Error publishing announcement!");
+    }
+  };
 
   return (
     <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <div className="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-2xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden">
-        
+
         <div className="px-8 py-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
           <div>
             <h3 className="text-xl font-bold text-slate-900">
-            {mode === "edit" ? "Edit Announcement" : "Create Announcement"}  
-          </h3>
+              {mode === "edit" ? "Edit Announcement" : "Create Announcement"}
+            </h3>
+            <p className="text-sm text-slate-500">Fill in the details for the festival-wide update.</p>
           </div>
-          <button
-            onClick={onClose}
-            className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
-          >
+          <button onClick={onClose} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
             <span className="material-symbols-outlined">close</span>
           </button>
         </div>
-
         <div className="px-8 py-6 overflow-y-auto custom-scrollbar flex flex-col gap-6">
 
           <div>
@@ -89,10 +116,11 @@ export default function AnnouncementsModal({  isOpen, onClose, onPublish, onSave
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="e.g. Schedule Change for Basketball Finals"
-              className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+              className={`w-full bg-slate-50 dark:bg-slate-800 border rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all
+                ${errors.title ? "border-red-400" : "border-slate-200 dark:border-slate-700"}`}
             />
+            {errors.title && <p className="text-xs text-red-500 mt-1">{errors.title}</p>}
           </div>
-
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
@@ -113,12 +141,15 @@ export default function AnnouncementsModal({  isOpen, onClose, onPublish, onSave
               <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
                 Publish Date
               </label>
-              <input
-                type="datetime-local"
-                value={publishDate}
-                onChange={(e) => setPublishDate(e.target.value)}
-                className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary"
+              <DatePicker
+                selected={publishDate}
+                onChange={(date) => setPublishDate(date)}
+                dateFormat="MMMM d, yyyy"
+                placeholderText="Select date"
+                className={`w-full bg-slate-50 dark:bg-slate-800 border rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary
+                  ${errors.publishDate ? "border-red-400" : "border-slate-200 dark:border-slate-700"}`}
               />
+              {errors.publishDate && <p className="text-xs text-red-500 mt-1">{errors.publishDate}</p>}
             </div>
           </div>
 
@@ -126,7 +157,7 @@ export default function AnnouncementsModal({  isOpen, onClose, onPublish, onSave
             <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
               Body Content
             </label>
-            <div className="border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
+            <div className={`border rounded-lg overflow-hidden ${errors.body ? "border-red-400" : "border-slate-200 dark:border-slate-700"}`}>
               <div className="bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-3 py-2 flex items-center gap-1">
                 <button className="p-1.5 hover:bg-white dark:hover:bg-slate-700 rounded text-slate-600 dark:text-slate-400">
                   <span className="material-symbols-outlined text-[18px]">format_bold</span>
@@ -151,9 +182,11 @@ export default function AnnouncementsModal({  isOpen, onClose, onPublish, onSave
                 onChange={(e) => setBody(e.target.value)}
                 placeholder="Write your announcement message here..."
                 className="w-full bg-white dark:bg-slate-900 border-none px-4 py-3 text-sm focus:ring-0 resize-none"
-              ></textarea>
+              />
             </div>
+            {errors.body && <p className="text-xs text-red-500 mt-1">{errors.body}</p>}
           </div>
+
         </div>
 
         <div className="px-8 py-6 border-t border-slate-200 dark:border-slate-800 flex items-center justify-end gap-3 bg-slate-50 dark:bg-slate-800/30">
@@ -169,8 +202,11 @@ export default function AnnouncementsModal({  isOpen, onClose, onPublish, onSave
           >
             Save as Draft
           </button>
-          <button onClick={handlePublish}  className="bg-primary hover:bg-primary/90 text-white px-8 py-2 rounded-lg font-bold text-sm shadow-lg shadow-primary/20 transition-all">
-            {mode === "edit" ? "Save Changes" : "Publish Now"}  
+          <button
+            onClick={handlePublish}
+            className="bg-primary hover:bg-primary/90 text-white px-8 py-2 rounded-lg font-bold text-sm shadow-lg shadow-primary/20 transition-all"
+          >
+            {mode === "edit" ? "Save Changes" : "Publish Now"}
           </button>
         </div>
 

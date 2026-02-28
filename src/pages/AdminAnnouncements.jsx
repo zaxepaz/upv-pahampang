@@ -16,6 +16,7 @@ import axios from "axios";
 const AdminAnnouncements = () => {
  const [active, setActive] = useState("All"); 
  const filters = ["All", "Urgent", "Schedule Change", "Sports Results", "Sponsors", "General Update"];
+const [searchQuery, setSearchQuery] = useState("");
 
  // pagenation states
  const [currentPage, setCurrentPage] = useState(1);
@@ -124,12 +125,21 @@ const handleEditClick = (announcement) => {
 
         <div class="flex items-center bg-white rounded-xl px-4 py-2.5 border border-slate-200 shadow-sm min-w-[320px]">
         <span class="material-symbols-outlined text-slate-400 text-lg mr-2">search</span>
-        <input class="bg-transparent border-none focus:ring-0 text-sm w-full placeholder:text-slate-400" placeholder="Search by title or author..." type="text"/>
+        <input
+          className="bg-transparent border-none focus:ring-0 text-sm w-full placeholder:text-slate-400"
+          placeholder="Search by title or author..."
+          type="text"
+          value={searchQuery}
+          onChange={(e) => {
+          setSearchQuery(e.target.value);
+          setCurrentPage(1);
+        }}
+        />
         <span class="material-symbols-outlined text-slate-300 text-lg ml-2 cursor-pointer">tune</span>
         </div>
         </div>
         
-        <AnnouncementsTable announcements={announcements} onDelete={handleDeleteClick} onEdit={handleEditClick}
+        <AnnouncementsTable searchQuery={searchQuery} announcements={announcements} onDelete={handleDeleteClick} onEdit={handleEditClick}
         currentPage={currentPage} setCurrentPage={setCurrentPage} itemsPerPage={itemsPerPage} activeFilter={active} />
        
         </div>

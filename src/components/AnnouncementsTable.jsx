@@ -2,16 +2,23 @@ import React, { useEffect, useState } from "react";
 import AnnouncementTableRow from "./AnnouncementTableRow";
 import axios from "axios";
 
-function AnnouncementsTable({ announcements, onDelete, onEdit, currentPage, setCurrentPage, itemsPerPage, activeFilter}) {
+function AnnouncementsTable({ searchQuery, announcements, onDelete, onEdit, currentPage, setCurrentPage, itemsPerPage, activeFilter}) {
 
   // filtering and pagination 
   const filtered = activeFilter === "All"
     ? announcements
     : announcements.filter((ann) => ann.category === activeFilter);
+   
+  const searched = searchQuery.trim() === ""
+    ? filtered
+    : filtered.filter((ann) =>
+        ann.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        ann.author.toLowerCase().includes(searchQuery.toLowerCase())
+      );
 
-  const totalPages = Math.ceil(filtered.length / itemsPerPage);
+  const totalPages = Math.ceil(searched.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginated = filtered.slice(startIndex, startIndex + itemsPerPage);
+  const paginated = searched.slice(startIndex, startIndex + itemsPerPage);
 
   return (
     
@@ -28,7 +35,7 @@ function AnnouncementsTable({ announcements, onDelete, onEdit, currentPage, setC
               </tr>
               </thead>
       <tbody className="divide-y divide-slate-100">
-        {filtered.length === 0 ? (
+        {searched.length === 0 ? (
           <tr>
             <td
               colSpan="5"
@@ -72,14 +79,14 @@ function AnnouncementsTable({ announcements, onDelete, onEdit, currentPage, setC
   </tbody>
       </table>
      <div className="p-6 border-t border-slate-100 flex items-center justify-between">
-        {filtered.length > 0 && (
+        {searched.length > 0 && (
           <p className="text-xs font-medium text-slate-500">
-            Showing {paginated.length} of {filtered.length} announcements  
+            Showing {paginated.length} of {searched.length} announcements
           </p>
         )}
-        {filtered.length > 0 && (
+        {searched.length > 0 && (
            <div className="flex items-center gap-2">
-          {/* Prev button */}
+        
           <button
             onClick={() => setCurrentPage((p) => p - 1)}
             disabled={currentPage === 1}
