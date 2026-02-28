@@ -45,7 +45,18 @@ function LoginPage() {
   };
 
   return (
+
+    
     <div>
+    
+      <button
+        onClick={() => navigate("/")}
+        className="absolute top-6 left-6 w-auto bg-primary text-white py-3.5 px-4 rounded-lg font-bold text-sm shadow-lg shadow-primary/20 hover:bg-primary/90 hover:shadow-xl hover:-translate-y-0.5 transition-all active:translate-y-0 flex items-center justify-center gap-2 z-20"
+      >
+        <span className="material-symbols-outlined text-base">arrow_back</span>
+        Home
+      </button>
+
   <div className="bg-background-light text-slate-900 min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
     <div className="watermark-bg"></div>
 

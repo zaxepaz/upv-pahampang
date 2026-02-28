@@ -88,7 +88,7 @@ export default function Sidebar() {
             <p className="text-xs font-bold text-slate-900">Juan Admin</p>
             <p className="text-[10px] text-slate-500">Super Administrator</p>
           </div>
-          <button className="p-1.5 text-slate-400 hover:text-primary transition-colors">
+          <button onClick={() => navigate("/login")} className="p-1.5 text-slate-400 hover:text-primary transition-colors">
             <span className="material-symbols-outlined text-xl">logout</span>
           </button>
         </div>
