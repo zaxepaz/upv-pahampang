@@ -24,9 +24,10 @@ function LoginPage() {
       const data = res.data;
 
       localStorage.setItem("adminUser", JSON.stringify(data.user));
+      console.log("user object:", data.user); 
 
       setLoading(false);
-      navigate("/dashboard"); //
+      navigate("/dashboard"); 
     } catch (err) {
       console.error(err);
 
@@ -34,7 +35,6 @@ function LoginPage() {
       
         setError(err.response.data.message || "Login failed");
       } else if (err.request) {
-      se
         setError("No response from server. Try again.");
       } else {
 

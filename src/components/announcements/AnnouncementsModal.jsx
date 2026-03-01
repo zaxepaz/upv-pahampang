@@ -63,7 +63,7 @@ export default function AnnouncementsModal({ isOpen, onClose, onPublish, onSave,
               );
               return new Date(combined.getTime() + (8 * 60 * 60 * 1000)).toISOString();
             })(),
-        author: "Juan Admin",
+        author: JSON.parse(localStorage.getItem("adminUser"))?.full_name || "Admin User",
         status: "Published",
       };
 
