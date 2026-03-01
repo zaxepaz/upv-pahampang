@@ -15,6 +15,9 @@ export default function Sidebar() {
   }
 
   const [active, setActive] = useState("Dashboard"); 
+
+  const user = JSON.parse(localStorage.getItem("adminUser"));
+  const fullName = user?.full_name || "Admin";
   
   const links = [
     { name: "Dashboard", icon: "grid_view", path: "/dashboard" },
@@ -85,10 +88,10 @@ export default function Sidebar() {
             />
           </div>
           <div className="flex-1">
-            <p className="text-xs font-bold text-slate-900">Juan Admin</p>
+            <p className="text-xs font-bold text-slate-900">{fullName}</p>
             <p className="text-[10px] text-slate-500">Super Administrator</p>
           </div>
-          <button className="p-1.5 text-slate-400 hover:text-primary transition-colors">
+          <button onClick={() => navigate("/login")} className="p-1.5 text-slate-400 hover:text-primary transition-colors">
             <span className="material-symbols-outlined text-xl">logout</span>
           </button>
         </div>

@@ -9,6 +9,7 @@ export default function AnnouncementTableRow({
   authorName,
   status,
   onDelete,
+  onEdit,
 }) 
 
 {   
@@ -39,13 +40,10 @@ export default function AnnouncementTableRow({
             </td>
             <td class="px-6 py-5">
                 <div class="flex items-center justify-end gap-2">
-                    <button class="p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-lg transition-all" title="Edit">
+                   <button onClick={onEdit} className="p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-lg transition-all" title="Edit">
                         <span class="material-symbols-outlined text-xl">edit</span>
                     </button>
-                    <button class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-all" title="Hide from public">
-                        <span class="material-symbols-outlined text-xl">visibility_off</span>
-                    </button>
-                    <button onClick={() => onDelete(id)} class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all" title="Delete">
+                    <button onClick={() => onDelete(id)} className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all" title="Delete">
                         <span class="material-symbols-outlined text-xl">delete</span>
                     </button>
                 </div>

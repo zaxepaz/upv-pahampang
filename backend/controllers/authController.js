@@ -1,10 +1,8 @@
-import express from "express";
 import { supabaseAdmin } from "../supabaseAdmin.js";
 
-const router = express.Router();
-
-router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+export const login = async (req, res) => {
+ const { email, password } = req.body;
+ console.log("Received:", email, password); 
 
   try {
    
@@ -28,18 +26,22 @@ router.post("/login", async (req, res) => {
     if (roleError || !adminData || adminData.length === 0) {
       return res.status(403).json({ message: "Not an admin" });
     }
+    res.cookie("adminToken", userData.id, {
+      httpOnly: true,
+      sameSite: "strict",
+      maxAge: 24 * 60 * 60 * 1000  
+    });
   
     res.status(200).json({
       message: "Login successful",
       user: {
         email: userData.email,
         role: adminData[0].role,  
+        full_name: userData.full_name,
       },
     });
   } catch (err) {
     console.error("Login route error:", err);
     res.status(500).json({ message: "Internal server error" });
   }
-});
-
-export default router;
+};

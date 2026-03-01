@@ -6,9 +6,9 @@ import PendingReviews from "../components/PendingReviews";
 import RecentActivity from "../components/RecentActivity";
 import "../index.css";
 import React, { useState } from "react";
-import AnnouncementsHeader from "../components/AnnouncementsHeader";
-import AnnouncementsModal from "../components/AnnouncementsModal";
-import AnnouncementsTable from "../components/AnnouncementsTable";
+import AnnouncementsHeader from "../components/announcements/AnnouncementsHeader";
+import AnnouncementsModal from "../components/announcements/AnnouncementsModal";
+import AnnouncementsTable from "../components/announcements/AnnouncementsTable";
 import ConfirmationModal from "../components/Confirmation";
 import { useEffect } from "react";
 import axios from "axios";
@@ -16,16 +16,24 @@ import axios from "axios";
 const AdminAnnouncements = () => {
  const [active, setActive] = useState("All"); 
  const filters = ["All", "Urgent", "Schedule Change", "Sports Results", "Sponsors", "General Update"];
+const [searchQuery, setSearchQuery] = useState("");
 
  // pagenation states
  const [currentPage, setCurrentPage] = useState(1);
  const itemsPerPage = 5;
 
  const [announcements, setAnnouncements] = useState([]);
+
+ const [editingAnnouncement, setEditingAnnouncement] = useState(null);
+
  // for modal
  const [isModalOpen, setIsModalOpen] = useState(false);
  const handleOpenModal = () => setIsModalOpen(true);
- const handleCloseModal = () => setIsModalOpen(false);
+ // when closing, reset
+const handleCloseModal = () => {
+  setIsModalOpen(false);
+  setEditingAnnouncement(null);
+};
  
  // for delete confirmation
  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -84,6 +92,11 @@ const handleConfirmDelete = async () => {
   setIsConfirmOpen(false);
   setPendingDeleteId(null);
 };
+
+const handleEditClick = (announcement) => {
+  setEditingAnnouncement(announcement);
+  setIsModalOpen(true);
+};
   return (
     <div className="min-h-screen flex bg-background-light text-slate-900">
       <Sidebar />
@@ -112,12 +125,21 @@ const handleConfirmDelete = async () => {
 
         <div class="flex items-center bg-white rounded-xl px-4 py-2.5 border border-slate-200 shadow-sm min-w-[320px]">
         <span class="material-symbols-outlined text-slate-400 text-lg mr-2">search</span>
-        <input class="bg-transparent border-none focus:ring-0 text-sm w-full placeholder:text-slate-400" placeholder="Search by title or author..." type="text"/>
+        <input
+          className="bg-transparent border-none focus:ring-0 text-sm w-full placeholder:text-slate-400"
+          placeholder="Search by title or author..."
+          type="text"
+          value={searchQuery}
+          onChange={(e) => {
+          setSearchQuery(e.target.value);
+          setCurrentPage(1);
+        }}
+        />
         <span class="material-symbols-outlined text-slate-300 text-lg ml-2 cursor-pointer">tune</span>
         </div>
         </div>
         
-        <AnnouncementsTable announcements={announcements} onDelete={handleDeleteClick} 
+        <AnnouncementsTable searchQuery={searchQuery} announcements={announcements} onDelete={handleDeleteClick} onEdit={handleEditClick}
         currentPage={currentPage} setCurrentPage={setCurrentPage} itemsPerPage={itemsPerPage} activeFilter={active} />
        
         </div>
@@ -133,6 +155,8 @@ const handleConfirmDelete = async () => {
           isOpen={isModalOpen}
           onClose={handleCloseModal}
           onPublish={handlePublish}
+          mode={editingAnnouncement ? "edit" : "create"}  
+          announcement={editingAnnouncement} 
         />
       )}
     </div>);
